@@ -15,8 +15,6 @@ You write test cases (pressure scenarios with subagents), watch them fail (basel
 
 **Core principle:** If you didn't watch an agent fail without the skill, you don't know if the skill teaches the right thing.
 
-**REQUIRED BACKGROUND:** You MUST understand superpowers:test-driven-development before using this skill. That skill defines the fundamental RED-GREEN-REFACTOR cycle. This skill adapts TDD to documentation.
-
 **Official guidance:** For Anthropic's official skill authoring best practices, see anthropic-best-practices.md. This document provides additional patterns and guidelines that complement the TDD-focused approach in this skill.
 
 ## What is a Skill?
@@ -43,6 +41,23 @@ A **skill** is a reference guide for proven techniques, patterns, or tools. Skil
 | **Refactor cycle** | Find new rationalizations → plug → re-verify |
 
 The entire skill creation process follows RED-GREEN-REFACTOR.
+
+## TDD Quick Reference
+
+Test-Driven Development (TDD) is a discipline where you write tests before code. The cycle:
+
+1. **RED** - Write a failing test that defines what you want
+2. **GREEN** - Write the minimal code to make the test pass
+3. **REFACTOR** - Clean up while keeping tests green
+
+**Core principle:** If you didn't watch the test fail, you don't know if it tests the right thing.
+
+**For skills, this means:**
+- RED: Run a pressure scenario WITHOUT the skill, watch the agent fail, document their rationalizations
+- GREEN: Write the minimal skill that addresses those specific failures
+- REFACTOR: Find new loopholes agents exploit, add counters, re-test until bulletproof
+
+**The Iron Law:** No production code (or skill) without a failing test first. Wrote code before the test? Delete it. Start over.
 
 ## When to Create a Skill
 
@@ -280,10 +295,9 @@ wc -w skills/path/SKILL.md
 **When writing documentation that references other skills:**
 
 Use skill name only, with explicit requirement markers:
-- ✅ Good: `**REQUIRED SUB-SKILL:** Use superpowers:test-driven-development`
-- ✅ Good: `**REQUIRED BACKGROUND:** You MUST understand superpowers:systematic-debugging`
-- ❌ Bad: `See skills/testing/test-driven-development` (unclear if required)
-- ❌ Bad: `@skills/testing/test-driven-development/SKILL.md` (force-loads, burns context)
+- ✅ Good: `**See also:** skill-name for more details`
+- ❌ Bad: `See skills/testing/skill-name` (unclear path format)
+- ❌ Bad: `@skills/skill-name/SKILL.md` (force-loads, burns context)
 
 **Why no @ links:** `@` syntax force-loads files immediately, consuming 200k+ context before you need them.
 
@@ -390,7 +404,7 @@ Edit skill without testing? Same violation.
 - Don't "adapt" while running tests
 - Delete means delete
 
-**REQUIRED BACKGROUND:** The superpowers:test-driven-development skill explains why this matters. Same principles apply to documentation.
+The same TDD principles that apply to code apply to documentation.
 
 ## Testing All Skill Types
 
