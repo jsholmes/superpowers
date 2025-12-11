@@ -8,7 +8,7 @@ Quick setup to enable superpowers skills in Codex.
    ```bash
    mkdir -p ~/.codex/superpowers
    cd ~/.codex/superpowers
-   git clone https://github.com/obra/superpowers.git .
+   git clone https://github.com/jsholmes/superpowers.git .
    ```
 
 2. **Create personal skills directory**:
@@ -16,20 +16,32 @@ Quick setup to enable superpowers skills in Codex.
    mkdir -p ~/.codex/skills
    ```
 
-3. **Update ~/.codex/AGENTS.md** to include this superpowers section:
-   ```markdown
-   ## Superpowers System
-
-   <EXTREMELY_IMPORTANT>
-   You have superpowers. Superpowers teach you new skills and capabilities. RIGHT NOW run: `~/.codex/superpowers/.codex/superpowers-codex bootstrap` and follow the instructions it returns.
-   </EXTREMELY_IMPORTANT>
+3. **Test the CLI**:
+   ```bash
+   ~/.codex/superpowers/.codex/superpowers-codex find-skills
    ```
 
-## Verification
+You should see the available skills listed.
 
-Test the installation:
-```bash
-~/.codex/superpowers/.codex/superpowers-codex bootstrap
+## Available Skills
+
+- **writing-skills** - Guide for creating effective skills
+- **brainstorming** - Refine ideas into designs through questioning
+- **testing-skills-with-subagents** - Validate skills with pressure testing
+
+## Usage
+
+To load a skill:
+```
+Run ~/.codex/superpowers/.codex/superpowers-codex use-skill superpowers:brainstorming
 ```
 
-You should see skill listings and bootstrap instructions. The system is now ready for use.
+To list all skills:
+```
+Run ~/.codex/superpowers/.codex/superpowers-codex find-skills
+```
+
+## Getting Help
+
+- Issues: https://github.com/jsholmes/superpowers/issues
+- Original repo: https://github.com/obra/superpowers

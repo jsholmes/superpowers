@@ -21,61 +21,6 @@ export const SuperpowersPlugin = async ({ client, directory }) => {
   const superpowersSkillsDir = path.resolve(__dirname, '../../skills');
   const personalSkillsDir = path.join(homeDir, '.config/opencode/skills');
 
-  // Helper to generate bootstrap content
-  const getBootstrapContent = (compact = false) => {
-    const usingSuperpowersPath = skillsCore.resolveSkillPath('using-superpowers', superpowersSkillsDir, personalSkillsDir);
-    if (!usingSuperpowersPath) return null;
-
-    const fullContent = fs.readFileSync(usingSuperpowersPath.skillFile, 'utf8');
-    const content = skillsCore.stripFrontmatter(fullContent);
-
-    const toolMapping = compact
-      ? `**Tool Mapping:** TodoWrite->update_plan, Task->@mention, Skill->use_skill
-
-**Skills naming (priority order):** project: > personal > superpowers:`
-      : `**Tool Mapping for OpenCode:**
-When skills reference tools you don't have, substitute OpenCode equivalents:
-- \`TodoWrite\` → \`update_plan\`
-- \`Task\` tool with subagents → Use OpenCode's subagent system (@mention)
-- \`Skill\` tool → \`use_skill\` custom tool
-- \`Read\`, \`Write\`, \`Edit\`, \`Bash\` → Your native tools
-
-**Skills naming (priority order):**
-- Project skills: \`project:skill-name\` (in .opencode/skills/)
-- Personal skills: \`skill-name\` (in ~/.config/opencode/skills/)
-- Superpowers skills: \`superpowers:skill-name\`
-- Project skills override personal, which override superpowers when names match`;
-
-    return `<EXTREMELY_IMPORTANT>
-You have superpowers.
-
-**IMPORTANT: The using-superpowers skill content is included below. It is ALREADY LOADED - you are currently following it. Do NOT use the use_skill tool to load "using-superpowers" - that would be redundant. Use use_skill only for OTHER skills.**
-
-${content}
-
-${toolMapping}
-</EXTREMELY_IMPORTANT>`;
-  };
-
-  // Helper to inject bootstrap via session.prompt
-  const injectBootstrap = async (sessionID, compact = false) => {
-    const bootstrapContent = getBootstrapContent(compact);
-    if (!bootstrapContent) return false;
-
-    try {
-      await client.session.prompt({
-        path: { id: sessionID },
-        body: {
-          noReply: true,
-          parts: [{ type: "text", text: bootstrapContent, synthetic: true }]
-        }
-      });
-      return true;
-    } catch (err) {
-      return false;
-    }
-  };
-
   return {
     tool: {
       use_skill: tool({
@@ -186,30 +131,6 @@ ${toolMapping}
           return output;
         }
       })
-    },
-    event: async ({ event }) => {
-      // Extract sessionID from various event structures
-      const getSessionID = () => {
-        return event.properties?.info?.id ||
-               event.properties?.sessionID ||
-               event.session?.id;
-      };
-
-      // Inject bootstrap at session creation (before first user message)
-      if (event.type === 'session.created') {
-        const sessionID = getSessionID();
-        if (sessionID) {
-          await injectBootstrap(sessionID, false);
-        }
-      }
-
-      // Re-inject bootstrap after context compaction (compact version to save tokens)
-      if (event.type === 'session.compacted') {
-        const sessionID = getSessionID();
-        if (sessionID) {
-          await injectBootstrap(sessionID, true);
-        }
-      }
     }
   };
 };

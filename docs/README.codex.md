@@ -1,13 +1,13 @@
 # Superpowers for Codex
 
-Complete guide for using Superpowers with OpenAI Codex.
+A stripped-down fork of [obra/superpowers](https://github.com/obra/superpowers) focused on skill authoring.
 
 ## Quick Install
 
 Tell Codex:
 
 ```
-Fetch and follow instructions from https://raw.githubusercontent.com/obra/superpowers/refs/heads/main/.codex/INSTALL.md
+Fetch and follow instructions from https://raw.githubusercontent.com/jsholmes/superpowers/refs/heads/main/.codex/INSTALL.md
 ```
 
 ## Manual Installation
@@ -23,7 +23,7 @@ Fetch and follow instructions from https://raw.githubusercontent.com/obra/superp
 
 ```bash
 mkdir -p ~/.codex/superpowers
-git clone https://github.com/obra/superpowers.git ~/.codex/superpowers
+git clone https://github.com/jsholmes/superpowers.git ~/.codex/superpowers
 ```
 
 #### 2. Install Bootstrap
@@ -38,7 +38,13 @@ Tell Codex:
 Run ~/.codex/superpowers/.codex/superpowers-codex find-skills to show available skills
 ```
 
-You should see a list of available skills with descriptions.
+You should see the available skills listed.
+
+## Available Skills
+
+- **writing-skills** - Guide for creating effective skills using TDD principles
+- **brainstorming** - Refine ideas into designs through Socratic questioning
+- **testing-skills-with-subagents** - Validate skills with pressure testing
 
 ## Usage
 
@@ -53,14 +59,6 @@ Run ~/.codex/superpowers/.codex/superpowers-codex find-skills
 ```
 Run ~/.codex/superpowers/.codex/superpowers-codex use-skill superpowers:brainstorming
 ```
-
-### Bootstrap All Skills
-
-```
-Run ~/.codex/superpowers/.codex/superpowers-codex bootstrap
-```
-
-This loads the complete bootstrap with all skill information.
 
 ### Personal Skills
 
@@ -85,30 +83,13 @@ description: Use when [condition] - [what it does]
 
 Personal skills override superpowers skills with the same name.
 
-## Architecture
+## Tool Mapping
 
-### Codex CLI Tool
-
-**Location:** `~/.codex/superpowers/.codex/superpowers-codex`
-
-A Node.js CLI script that provides three commands:
-- `bootstrap` - Load complete bootstrap with all skills
-- `use-skill <name>` - Load a specific skill
-- `find-skills` - List all available skills
-
-### Shared Core Module
-
-**Location:** `~/.codex/superpowers/lib/skills-core.js`
-
-The Codex implementation uses the shared `skills-core` module (ES module format) for skill discovery and parsing. This is the same module used by the OpenCode plugin, ensuring consistent behavior across platforms.
-
-### Tool Mapping
-
-Skills written for Claude Code are adapted for Codex with these mappings:
+When skills reference Claude Code tools, substitute Codex equivalents:
 
 - `TodoWrite` → `update_plan`
-- `Task` with subagents → Tell user subagents aren't available, do work directly
-- `Skill` tool → `~/.codex/superpowers/.codex/superpowers-codex use-skill`
+- `Task` with subagents → Do the work directly
+- `Skill` tool → `superpowers-codex use-skill`
 - File operations → Native Codex tools
 
 ## Updating
@@ -132,22 +113,7 @@ git pull
 chmod +x ~/.codex/superpowers/.codex/superpowers-codex
 ```
 
-### Node.js errors
-
-The CLI script requires Node.js. Verify:
-
-```bash
-node --version
-```
-
-Should show v14 or higher (v18+ recommended for ES module support).
-
 ## Getting Help
 
-- Report issues: https://github.com/obra/superpowers/issues
-- Main documentation: https://github.com/obra/superpowers
-- Blog post: https://blog.fsck.com/2025/10/27/skills-for-openai-codex/
-
-## Note
-
-Codex support is experimental and may require refinement based on user feedback. If you encounter issues, please report them on GitHub.
+- Issues: https://github.com/jsholmes/superpowers/issues
+- Original repo: https://github.com/obra/superpowers
